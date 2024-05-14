@@ -1,0 +1,21 @@
+
+
+  "aerolinea": "Wingo",
+  "origen": "Jose Maria Cordoba",
+  "destino": "Miami",
+  "fecha_salida": "2024-06-10",
+  "fecha_llegada": "2024-07-10",
+  "precio": 800,
+  "estado": "No Reservado",
+  "adultos": 1,
+  "niños": 1
+
+  {
+  "año": 2023,
+  "fecha_inicio": "2024-06-19",
+  "fecha_fin": "2024-06-20",
+  "precio": 700,
+  "ciudad": "Madrid",
+  "estado": "No Reservado",
+  "modelo": "Chevrolet"
+}
