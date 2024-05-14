@@ -1,4 +1,4 @@
-# Booking Python MongoDB - Ejemplo de Tiempos de Ejecución
+# Booking Python MongoDB - Ejemplo de Tiempos de Ejecución 💙💻
 
 Este repositorio contiene un ejemplo de aplicación de Booking desarrollada en Python utilizando una base de datos MongoDB. El objetivo principal de este proyecto es analizar y comparar los tiempos de ejecución de diversas operaciones de base de datos.
 
