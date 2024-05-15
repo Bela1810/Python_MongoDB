@@ -1,13 +1,20 @@
 import pymongo
+import time
 from datetime import datetime
 from bson import ObjectId
+
 
 class MongoDBClient:
     def __init__(self, uri, db_name):
         self.client = pymongo.MongoClient(uri)
         self.db = self.client.get_database(db_name)
 
+    def calcular_ejecucion(self, inicio, final):
+        tiempo_ejecucion = final - inicio
+        print(F"TIEMPO DE EJECUCION: {tiempo_ejecucion}")
+
     def mostrar_documentos(self):
+        contar_tiempo = time.time()
         colecciones = self.db.list_collection_names()
 
         for coleccion_nombre in colecciones:
@@ -16,7 +23,12 @@ class MongoDBClient:
             for documento in coleccion.find():
                 print(documento)
 
+        fin = time.time()
+        print("CONSULTAS")
+        self.calcular_ejecucion(contar_tiempo, fin)
+
     def buscar_vuelos_disponibles(self, fecha_inicio, fecha_fin):
+        contar_tiempo = time.time()
         vuelos_disponibles = []
         vuelos_collection = self.db.get_collection("aviones")
 
@@ -27,25 +39,39 @@ class MongoDBClient:
             if fecha_inicio <= fecha_vuelo_inicio <= fecha_fin or fecha_inicio <= fecha_vuelo_fin <= fecha_fin:
                 vuelos_disponibles.append(vuelo)
 
+        fin = time.time()
+        print("BUSQUEDA")
+        self.calcular_ejecucion(contar_tiempo, fin)
         return vuelos_disponibles
 
-
     def insertar_vuelo(self, vuelo_data):
+        contar_tiempo = time.time()
         vuelos_collection = self.db.get_collection("aviones")
         insert_result = vuelos_collection.insert_one(vuelo_data)
+        fin = time.time()
+        print("INSERTAR")
+        self.calcular_ejecucion(contar_tiempo, fin)
         return insert_result.inserted_id
 
     def eliminar_vuelo(self, vuelo_id):
+        contar_tiempo = time.time()
         vuelos_collection = self.db.get_collection("aviones")
         delete_result = vuelos_collection.delete_one({"_id": ObjectId(vuelo_id)})
+        fin = time.time()
+        print("ELIMINAR")
+        self.calcular_ejecucion(contar_tiempo, fin)
         return delete_result.deleted_count
 
     def actualizar_vuelo(self, vuelo_id, nuevos_datos):
+        contar_tiempo = time.time()
         vuelos_collection = self.db.get_collection("aviones")
         update_result = vuelos_collection.update_one(
             {"_id": ObjectId(vuelo_id)},
             {"$set": nuevos_datos}
         )
+        fin = time.time()
+        print("ACTUALIZAR")
+        self.calcular_ejecucion(contar_tiempo, fin)
         return update_result.modified_count
 
     def cerrar_conexion(self):
@@ -87,14 +113,15 @@ nuevos_datos = {
     "niños": 1
 }
 
-#vuelo_id_insertar = mongo_client.insertar_vuelo(vuelo_data)
-#print("ID del vuelo insertado:", vuelo_id_insertar)
+vuelo_id_insertar = mongo_client.insertar_vuelo(vuelo_data)
+print("ID del vuelo insertado:", vuelo_id_insertar)
 
-#vuelo_id_eliminar = "6642c43e0a4efffdb742e3c6"
-#cantidad_eliminada = mongo_client.eliminar_vuelo(vuelo_id_eliminar)
-#print("Cantidad de vuelos eliminados:", cantidad_eliminada)
+vuelo_id_eliminar = "6642c43e0a4efffdb742e3c6"
+cantidad_eliminada = mongo_client.eliminar_vuelo(vuelo_id_eliminar)
+print("Cantidad de vuelos eliminados:", cantidad_eliminada)
 
-#vuelo_id_actualizar = "6642c4e80d4f515cf5a70eac"
-##print("Cantidad de vuelos actualizados:", cantidad_actualizada)
+vuelo_id_actualizar = "6642c4e80d4f515cf5a70eac"
+cantidad_actualizada = mongo_client.actualizar_vuelo(vuelo_id_actualizar, nuevos_datos)
+print("Cantidad de vuelos actualizados:", cantidad_actualizada)
 
 mongo_client.cerrar_conexion()
