@@ -12,7 +12,7 @@ class MongoDBClient:
     def calcular_ejecucion(self, inicio, final):
         tiempo_ejecucion = final - inicio
         print(F"TIEMPO DE EJECUCION: {tiempo_ejecucion}")
-
+##
     def mostrar_documentos(self):
         contar_tiempo = time.time()
         colecciones = self.db.list_collection_names()
